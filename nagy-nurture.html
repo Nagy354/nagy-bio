@@ -1,0 +1,612 @@
+<title>nagy, nurtured</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --paper: #fbfaf4;
+    --paper-line: #e4e2d5;
+    --ink: #1c1e17;
+    --ink-soft: #62695a;
+    --grass: #3f7d3a;
+    --grass-deep: #26491f;
+    --grass-pale: #dde8d2;
+    --font-body: "Noto Serif KR", "Batang", Georgia, serif;
+  }
+
+  /* One committed visual world (Nurture's white-sky-and-meadow palette),
+     so this page does not invert for dark mode -- colors are still
+     declared explicitly rather than left to inherit from the host. */
+
+  * { box-sizing: border-box; }
+
+  html { color-scheme: light; }
+
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.75;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  a {
+    color: var(--grass-deep);
+    text-decoration-color: var(--grass-pale);
+    text-underline-offset: 3px;
+  }
+  a:hover { text-decoration-color: var(--grass); }
+  a:focus-visible, button:focus-visible {
+    outline: 2px solid var(--grass-deep);
+    outline-offset: 3px;
+  }
+
+  .scene {
+    position: relative;
+    z-index: 1;
+    max-width: 640px;
+    margin: 0 auto;
+    padding: 4.5rem 1.5rem 0;
+  }
+
+  @media (max-width: 480px) {
+    .scene { padding: 3rem 1.25rem 0; }
+  }
+
+  header { text-align: center; }
+
+  .mark {
+    margin: 0 auto 1.2rem;
+    display: block;
+  }
+
+  /* --- tick-mark caption rail, running down the left edge --- */
+  .tick-rail {
+    position: fixed;
+    left: 18px;
+    top: 0;
+    bottom: 0;
+    width: 24px;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .tick-rail::before {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 5%;
+    bottom: 5%;
+    width: 1px;
+    background: var(--paper-line);
+  }
+
+  .tick-rail span {
+    position: absolute;
+    left: 50%;
+    white-space: nowrap;
+    font-size: 0.62rem;
+    font-style: italic;
+    letter-spacing: 0.16em;
+    color: var(--ink-soft);
+    background: var(--paper);
+    padding: 0.3rem 0;
+    transform: translateX(-50%) rotate(-90deg);
+    transform-origin: center;
+  }
+
+  .tick-rail span:nth-child(1) { top: 12%; }
+  .tick-rail span:nth-child(2) { top: 48%; }
+  .tick-rail span:nth-child(3) { top: 84%; }
+
+  @media (max-width: 980px) {
+    .tick-rail { display: none; }
+  }
+
+  .eyebrow {
+    font-size: 0.72rem;
+    letter-spacing: 0.32em;
+    text-transform: lowercase;
+    color: var(--ink-soft);
+    margin: 0 0 1.6rem;
+  }
+
+  h1 {
+    font-family: var(--font-body);
+    font-weight: 500;
+    font-size: clamp(1.9rem, 6vw, 2.5rem);
+    letter-spacing: 0.05em;
+    line-height: 1.3;
+    margin: 0 0 1rem;
+    text-wrap: balance;
+    color: var(--ink);
+  }
+
+  .tagline {
+    font-size: 1.02rem;
+    letter-spacing: 0.02em;
+    color: var(--ink-soft);
+    max-width: 32em;
+    margin: 0 auto;
+  }
+
+  .tagline .name {
+    color: var(--ink);
+    font-weight: 600;
+  }
+
+  /* --- divider: hairline with a small cross, like the sleeve's mark --- */
+  .divider {
+    position: relative;
+    height: 1px;
+    background: var(--paper-line);
+    margin: 3.25rem 0;
+  }
+  .divider::after {
+    content: "+";
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -55%);
+    background: var(--paper);
+    color: var(--grass);
+    font-size: 0.85rem;
+    padding: 0 0.6rem;
+  }
+
+  section > p { max-width: 62ch; }
+
+  h2.section-label {
+    font-weight: 500;
+    font-size: 0.85rem;
+    letter-spacing: 0.34em;
+    text-transform: lowercase;
+    color: var(--ink);
+    margin: 0 0 0.35rem;
+  }
+
+  .section-note {
+    font-size: 0.85rem;
+    letter-spacing: 0.06em;
+    color: var(--ink-soft);
+    font-style: italic;
+    margin: 0 0 1.4rem;
+  }
+
+  h3.entry-title {
+    font-family: var(--font-body);
+    font-size: 1rem;
+    font-weight: 600;
+    margin: 0 0 0.2rem;
+    color: var(--ink);
+  }
+
+  .entries {
+    display: flex;
+    flex-direction: column;
+    gap: 1.6rem;
+  }
+
+  .entry {
+    display: grid;
+    grid-template-columns: 6.6rem 1fr;
+    gap: 1.1rem;
+  }
+
+  @media (max-width: 480px) {
+    .entry { grid-template-columns: 1fr; gap: 0.25rem; }
+  }
+
+  .entry time {
+    font-size: 0.8rem;
+    letter-spacing: 0.06em;
+    color: var(--grass-deep);
+    padding-top: 0.2rem;
+    white-space: nowrap;
+  }
+
+  .entry .place {
+    color: var(--ink-soft);
+    font-size: 0.94rem;
+    font-style: italic;
+    margin: 0 0 0.35rem;
+  }
+
+  .entry p:last-child { margin-bottom: 0; }
+
+  .featured {
+    background: #ffffff;
+    border: 1px solid var(--paper-line);
+    padding: 1.9rem 1.9rem 2.1rem;
+  }
+
+  @media (max-width: 480px) {
+    .featured { padding: 1.4rem; }
+  }
+
+  .featured h3.entry-title { font-size: 1.08rem; }
+
+  .spec-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.1rem 2rem;
+    margin: 1.5rem 0;
+    font-size: 0.87rem;
+  }
+
+  @media (max-width: 480px) {
+    .spec-grid { grid-template-columns: 1fr; }
+  }
+
+  .spec-grid dt {
+    letter-spacing: 0.1em;
+    text-transform: lowercase;
+    color: var(--grass-deep);
+    font-size: 0.72rem;
+    margin-bottom: 0.28rem;
+  }
+
+  .spec-grid dd {
+    margin: 0;
+    color: var(--ink);
+    line-height: 1.5;
+  }
+
+  .note {
+    font-size: 0.9rem;
+    color: var(--ink-soft);
+    border-left: 2px solid var(--grass-pale);
+    padding-left: 0.9rem;
+    margin: 1.5rem 0 0;
+  }
+
+  .compact-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .compact-list li {
+    display: grid;
+    grid-template-columns: 3.4rem 1fr;
+    gap: 0.7rem;
+    color: var(--ink);
+  }
+
+  .compact-list .year {
+    font-size: 0.8rem;
+    letter-spacing: 0.05em;
+    color: var(--grass-deep);
+  }
+
+  @media (max-width: 480px) {
+    .compact-list li { grid-template-columns: 1fr; gap: 0.1rem; }
+  }
+
+  dl.tag-groups { margin: 0; }
+  dl.tag-groups > div { margin-bottom: 1.2rem; }
+  dl.tag-groups > div:last-child { margin-bottom: 0; }
+
+  dl.tag-groups dt {
+    font-size: 0.78rem;
+    letter-spacing: 0.15em;
+    text-transform: lowercase;
+    color: var(--grass-deep);
+    margin-bottom: 0.4rem;
+  }
+
+  dl.tag-groups dd {
+    margin: 0;
+    color: var(--ink);
+    max-width: 62ch;
+  }
+
+  footer {
+    position: relative;
+    z-index: 1;
+    margin-top: 3.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    font-size: 0.82rem;
+    letter-spacing: 0.06em;
+    color: var(--ink-soft);
+    padding-bottom: 2.5rem;
+  }
+
+  footer a { color: var(--grass-deep); }
+  footer a:hover { color: var(--ink); }
+
+  strong { font-weight: 600; }
+
+  #cursor-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    pointer-events: none;
+    z-index: 0;
+  }
+</style>
+
+<div class="tick-rail" aria-hidden="true">
+  <span>updated · 28 08 2026</span>
+  <span>iot engineer · depok, id</span>
+  <span>image credits: nagy</span>
+</div>
+
+<div class="scene">
+
+  <header>
+    <p class="eyebrow">depok, west java, indonesia</p>
+    <h1>elegan basyaton fiihudan</h1>
+    <p class="tagline">Goes by <span class="name">Nagy</span> online. IoT engineer, and a generalist at heart.</p>
+  </header>
+
+  <div class="divider" aria-hidden="true"></div>
+
+  <section id="about">
+    <p>I graduated in August 2026 from IPB University's Sekolah Vokasi with a D4 in Computer Engineering Technology (Teknologi Rekayasa Komputer), GPA 3.57.</p>
+  </section>
+
+  <div class="divider" aria-hidden="true"></div>
+
+  <section id="experience">
+    <h2 class="section-label">experience</h2>
+    <div class="entries">
+
+      <div class="entry">
+        <time>2025 Feb–Jun</time>
+        <div>
+          <h3 class="entry-title">Linux Engineer Intern</h3>
+          <p class="place">Balai Besar Perakitan dan Modernisasi Pascapanen Pertanian, Bogor</p>
+          <p>Set up cloud-based file storage (OwnCloud) and IT asset tracking (Snipe-IT), both on Ubuntu.</p>
+        </div>
+      </div>
+
+      <div class="entry">
+        <time>2025 Aug–Dec</time>
+        <div>
+          <h3 class="entry-title">IoT Engineer Intern</h3>
+          <p class="place">PT. Synergy Dua Kawan Sejati, Tangerang</p>
+          <p>Built the web dashboard for the company's warehouse security platform: Next.js and Supabase on the frontend, Telegram Bot API for alerting.</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <div class="divider" aria-hidden="true"></div>
+
+  <section id="project" class="featured">
+    <h2 class="section-label">final project</h2>
+    <h3 class="entry-title">Dwell-time filtering for warehouse security cameras</h3>
+    <p class="place">Implementation of Dwell-Time Logic on an ESP32-CAM for False Alarm Reduction in an Edge-Cloud Based Warehouse Security System</p>
+    <p>Motion sensors alone can't tell a loiterer from someone walking past, so this system adds two more filters before it bothers anyone with a phone notification: an ESP32-CAM has to see continuous presence for 12 seconds before it's worth a second look, and only then does a frame get sent off for object detection.</p>
+
+    <dl class="spec-grid">
+      <div>
+        <dt>architecture</dt>
+        <dd>PIR sensor → dwell timer (ESP32-CAM) → YOLOv8n inference (DigitalOcean)</dd>
+      </div>
+      <div>
+        <dt>dwell threshold</dt>
+        <dd>12 seconds of continuous presence</dd>
+      </div>
+      <div>
+        <dt>accuracy</dt>
+        <dd>68.6% weighted average across 50 trials</dd>
+      </div>
+      <div>
+        <dt>false-positive rejection</dt>
+        <dd>100% of non-loitering attempts correctly ignored</dd>
+      </div>
+      <div>
+        <dt>cloud stack</dt>
+        <dd>Supabase, Next.js on Vercel, Telegram Bot API</dd>
+      </div>
+    </dl>
+
+  </section>
+
+  <div class="divider" aria-hidden="true"></div>
+
+  <section id="projects">
+    <h2 class="section-label">other projects</h2>
+    <p class="section-note">group coursework, IPB University</p>
+    <ul class="compact-list">
+      <li><span class="year">2023</span><span class="desc">Heartbeat sensor with pulse detection and audible alert</span></li>
+      <li><span class="year">2024</span><span class="desc">SoltharinE, a solar charging station with a sun-tracking panel and IoT monitoring</span></li>
+      <li><span class="year">2024</span><span class="desc">Hallent, an automated pest-repellent sprayer with IoT monitoring</span></li>
+      <li><span class="year">2024</span><span class="desc">Vocational travel agency app, CodeIgniter and Android Studio</span></li>
+      <li><span class="year">2025</span><span class="desc">Early fire detection system with a sensor turret and Telegram alerts</span></li>
+    </ul>
+  </section>
+
+  <div class="divider" aria-hidden="true"></div>
+
+  <section id="skills">
+    <h2 class="section-label">skills &amp; certifications</h2>
+    <dl class="tag-groups">
+      <div>
+        <dt>networking</dt>
+        <dd>Mikrotik and Cisco routers, network security, CCNAv7: Introduction to Networks (2022), Switching Routing and Wireless Essentials (2023), Enterprise Networking Security and Automation (2024)</dd>
+      </div>
+      <div>
+        <dt>hardware &amp; embedded</dt>
+        <dd>Arduino IDE, C++ for microcontrollers, Linux systems administration, Hardware Installation Supervisor (BNSP, 2026)</dd>
+      </div>
+      <div>
+        <dt>software</dt>
+        <dd>Python, Next.js, Supabase, Microsoft Office, Canva</dd>
+      </div>
+    </dl>
+  </section>
+
+  <div class="divider" aria-hidden="true"></div>
+
+  <section id="elsewhere">
+    <h2 class="section-label">elsewhere</h2>
+    <p>I've been a drummer since I was a teenager, and it's pulled in a long tail of related hobbies: ukulele, bass, and cajon on the side, singing, and I'm an avid gamer on top of it all. Past that the list gets a little scattered: Rubik's cubes, drawing, swimming, cycling, lock picking, card games, movies, music, and football.</p>
+    <p>I read manga and watch anime more than I'll admit, my music taste covers pretty much every genre at this point, and on the language side I speak Indonesian and English and just passed the JLPT N2 in Japanese.</p>
+  </section>
+
+  <footer>
+    <a href="mailto:elganegan@gmail.com">elganegan@gmail.com</a>
+    <span>updated august 2026</span>
+  </footer>
+
+</div>
+
+<canvas id="cursor-canvas" aria-hidden="true"></canvas>
+
+<script>
+  // A transparent canvas the height of the whole page (not just the
+  // viewport) draws a persistent line following the cursor -- ink on the
+  // page itself, so it scrolls with the content instead of floating fixed
+  // on screen. Sits behind the text (see .scene / .tick-rail z-index)
+  // and behind nothing else, so it never covers what you're reading.
+  (function () {
+    var canvas = document.getElementById('cursor-canvas');
+    if (!canvas || !canvas.getContext) return;
+    var ctx = canvas.getContext('2d');
+
+    function resizeCanvas() {
+      // resizing clears the canvas -- an acceptable tradeoff for a page
+      // that rarely resizes mid-visit
+      canvas.width = window.innerWidth;
+      canvas.height = Math.max(document.documentElement.scrollHeight, window.innerHeight);
+      ctx.lineCap = 'butt';
+      ctx.lineJoin = 'miter';
+      ctx.lineWidth = 1.3;
+      var ink = getComputedStyle(document.documentElement).getPropertyValue('--ink').trim() || '#1c1e17';
+      ctx.strokeStyle = ink;
+      ctx.globalAlpha = 0.8;
+    }
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
+    window.addEventListener('load', resizeCanvas);
+    setTimeout(resizeCanvas, 600); // catch late layout shifts from web fonts
+
+    var lastX = null;
+    var lastY = null;
+    var minSegment = 25; // px -- a new segment only commits past this length,
+                         // which is what gives each one a sharp, deliberate
+                         // corner instead of a fuzzy trail when the cursor
+                         // is moving slowly
+
+    // if the cursor sits still, the line keeps drawing on its own: roughly
+    // two random-direction, random-length segments a second, but the pace
+    // itself is uneven rather than a steady metronome, until the mouse
+    // moves again, at which point the last of those points connects
+    // straight back to wherever the cursor now is
+    var idleTimer = null;
+    var autoTimer = null;
+    var isAuto = false;
+
+    function stopAuto() {
+      if (autoTimer) {
+        clearTimeout(autoTimer);
+        autoTimer = null;
+      }
+      isAuto = false;
+    }
+
+    function drawAutoSegment() {
+      if (lastX === null || lastY === null) return;
+      var angle = Math.random() * Math.PI * 2;
+      var len = 30 + Math.random() * 150;
+      var nx = lastX + Math.cos(angle) * len;
+      var ny = lastY + Math.sin(angle) * len;
+      ctx.beginPath();
+      ctx.moveTo(lastX, lastY);
+      ctx.lineTo(nx, ny);
+      ctx.stroke();
+      lastX = nx;
+      lastY = ny;
+    }
+
+    function scheduleAutoSegment() {
+      // averages out to about two a second, but each gap is its own
+      // random draw rather than a fixed 500ms tick
+      var delay = 200 + Math.random() * 600;
+      autoTimer = setTimeout(function () {
+        if (!isAuto) return;
+        drawAutoSegment();
+        scheduleAutoSegment();
+      }, delay);
+    }
+
+    function scheduleIdle() {
+      clearTimeout(idleTimer);
+      idleTimer = setTimeout(function () {
+        if (lastX === null || lastY === null) return;
+        isAuto = true;
+        scheduleAutoSegment();
+      }, 3000);
+    }
+
+    window.addEventListener('mousemove', function (e) {
+      // page-relative coordinates, so the ink is pinned to the document
+      // (and scrolls with it) rather than the viewport
+      var x = e.pageX;
+      var y = e.pageY;
+
+      if (lastX === null || lastY === null) {
+        lastX = x;
+        lastY = y;
+        scheduleIdle();
+        return;
+      }
+
+      if (isAuto) {
+        // the cursor is back: connect the last auto-drawn point straight
+        // to it, no minimum-length gate, then hand control back to the mouse
+        stopAuto();
+        ctx.beginPath();
+        ctx.moveTo(lastX, lastY);
+        ctx.lineTo(x, y);
+        ctx.stroke();
+        lastX = x;
+        lastY = y;
+        scheduleIdle();
+        return;
+      }
+
+      var dx = x - lastX;
+      var dy = y - lastY;
+      if (Math.sqrt(dx * dx + dy * dy) < minSegment) {
+        scheduleIdle();
+        return;
+      }
+
+      ctx.beginPath();
+      ctx.moveTo(lastX, lastY);
+      ctx.lineTo(x, y);
+      ctx.stroke();
+      lastX = x;
+      lastY = y;
+      scheduleIdle();
+    });
+
+    // break the line when the cursor leaves the window, so it doesn't
+    // jump across the gap when it comes back
+    document.addEventListener('mouseout', function (e) {
+      if (e.relatedTarget === null) {
+        clearTimeout(idleTimer);
+        stopAuto();
+        lastX = null;
+        lastY = null;
+      }
+    });
+  })();
+</script>
