@@ -64,49 +64,6 @@
     display: block;
   }
 
-  /* --- tick-mark caption rail, running down the left edge --- */
-  .tick-rail {
-    position: fixed;
-    left: 18px;
-    top: 0;
-    bottom: 0;
-    width: 24px;
-    pointer-events: none;
-    z-index: 1;
-  }
-
-  .tick-rail::before {
-    content: "";
-    position: absolute;
-    left: 50%;
-    top: 5%;
-    bottom: 5%;
-    width: 1px;
-    background: var(--paper-line);
-  }
-
-  .tick-rail span {
-    position: absolute;
-    left: 50%;
-    white-space: nowrap;
-    font-size: 0.62rem;
-    font-style: italic;
-    letter-spacing: 0.16em;
-    color: var(--ink-soft);
-    background: var(--paper);
-    padding: 0.3rem 0;
-    transform: translateX(-50%) rotate(-90deg);
-    transform-origin: center;
-  }
-
-  .tick-rail span:nth-child(1) { top: 12%; }
-  .tick-rail span:nth-child(2) { top: 48%; }
-  .tick-rail span:nth-child(3) { top: 84%; }
-
-  @media (max-width: 980px) {
-    .tick-rail { display: none; }
-  }
-
   .eyebrow {
     font-size: 0.72rem;
     letter-spacing: 0.32em;
@@ -338,12 +295,6 @@
   }
 </style>
 
-<div class="tick-rail" aria-hidden="true">
-  <span>updated · 28 08 2026</span>
-  <span>iot engineer · depok, id</span>
-  <span>image credits: nagy</span>
-</div>
-
 <div class="scene">
 
   <header>
@@ -355,7 +306,7 @@
   <div class="divider" aria-hidden="true"></div>
 
   <section id="about">
-    <p>I graduated in August 2026 from IPB University's Sekolah Vokasi with a D4 in Computer Engineering Technology (Teknologi Rekayasa Komputer), GPA 3.57.</p>
+    <p>I graduated in August 2026 from IPB University's Sekolah Vokasi with a D4 in Computer Engineering Technology (Teknologi Rekayasa Komputer), GPA 3.53.</p>
   </section>
 
   <div class="divider" aria-hidden="true"></div>
@@ -473,8 +424,8 @@
   // A transparent canvas the height of the whole page (not just the
   // viewport) draws a persistent line following the cursor -- ink on the
   // page itself, so it scrolls with the content instead of floating fixed
-  // on screen. Sits behind the text (see .scene / .tick-rail z-index)
-  // and behind nothing else, so it never covers what you're reading.
+  // on screen. Sits behind the text (see .scene z-index) and behind
+  // nothing else, so it never covers what you're reading.
   (function () {
     var canvas = document.getElementById('cursor-canvas');
     if (!canvas || !canvas.getContext) return;
